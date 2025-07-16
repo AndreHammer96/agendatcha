@@ -133,7 +133,7 @@ def kanban_provas():
         return render_template('error.html', error=str(e))
 
 # Se for rodar localmente, descomente abaixo:
-#if __name__ == '__main__':
-#   app.run(host='localhost', port=5000, debug=True)
-
-app.config['DEBUG'] = True
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))  # Usará 5000 se $PORT não existir
+    app.run(host='0.0.0.0', port=port)
+    
