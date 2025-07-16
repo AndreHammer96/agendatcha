@@ -6,7 +6,9 @@ import os
 import requests
 from io import StringIO
 import unicodedata
-
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -131,7 +133,7 @@ def kanban_provas():
         return render_template('error.html', error=str(e))
 
 # Se for rodar localmente, descomente abaixo:
-if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+#if __name__ == '__main__':
+#   app.run(host='localhost', port=5000, debug=True)
 
 app.config['DEBUG'] = True
