@@ -145,5 +145,5 @@ def kanban_provas():
                          proximas_provas=data['proximas_provas'],
                          atualizado_em=data['atualizado_em'])
 
-if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+# Nada — Remova totalmente o `if __name__ == '__main__':` se usar Gunicorn
+# O Gunicorn vai importar e usar a variável 'app' automaticamente
