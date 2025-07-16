@@ -131,3 +131,5 @@ def kanban_provas():
 # Se for rodar localmente, descomente abaixo:
 #if __name__ == '__main__':
 #    app.run(host='localhost', port=5000, debug=True)
+app = Flask(__name__)
+app.config['DEBUG'] = True
