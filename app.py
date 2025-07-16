@@ -26,8 +26,8 @@ def download_sheets_data():
         response.raise_for_status()
         
         # Salva um backup local
-        with open(LOCAL_BACKUP, 'w', encoding='utf-8') as f:
-            f.write(response.text)
+        #with open(LOCAL_BACKUP, 'w', encoding='utf-8') as f:
+        #    f.write(response.text)
             
         # Lê o CSV garantindo a codificação correta
         df = pd.read_csv(StringIO(response.text), encoding='utf-8')
