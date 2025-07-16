@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban de Provas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .column {
+            flex: 1;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .column-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .prova-card {
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .prova-agora {
+            background-color: #c8e6c9; /* Verde claro */
+            border-left: 5px solid #2e7d32; /* Verde escuro */
+        }
+        .prova-proxima {
+            background-color: #bbdefb; /* Azul claro */
+            border-left: 5px solid #1565c0; /* Azul escuro */
+        }
+        .prova-hora {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .prova-nome {
+		margin: 10px 0;
+		font-size: 1.2em;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		}
+		.medalhas {
+		font-size: 1.4em;
+		margin-left: 10px;
+		}
+        .prova-responsavel {
+            font-style: italic;
+            color: #555;
+        }
+        
+        /* NOVOS ESTILOS PARA O CABEÇALHO */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header-title {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .refresh-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .atualizado {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .auto-refresh {
+            font-size: 0.8em;
+            color: #666;
+        }
+        .refresh-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .refresh-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <div class="header-title">PROVAS</div>
+        <div class="header-controls">
+            <button class="refresh-button" onclick="refreshData()">↻ Atualizar</button>
+            <div class="refresh-info">
+                <div class="atualizado">Atualizado em: {{ atualizado_em }}</div>
+                <div class="auto-refresh">(próxima atualização em <span id="countdown">60</span>s)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="column">
+            <div class="column-title" style="background-color: #a5d6a7;">PROVAS ACONTECENDO AGORA</div>
+            {% for prova in provas_agora %}
+            <div class="prova-card prova-agora">
+                <div class="prova-hora">{{ prova['DATA'].strftime('%d/%m/%Y %H:%M') }}</div>
+                <div class="prova-nome">{{ prova['PROVA'] }}</div>
+				
+                <div class="prova-responsavel">Responsável: {{ prova['RESPONSAVEL'] }}</div>
+            </div>
+            {% else %}
+            <div class="prova-card">
+                Nenhuma prova acontecendo no momento
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="column">
+            <div class="column-title" style="background-color: #90caf9;">PRÓXIMAS PROVAS</div>
+            {% for prova in proximas_provas %}
+            <div class="prova-card prova-proxima">
+                <div class="prova-hora">{{ prova['DATA'].strftime('%d/%m/%Y %H:%M') }}</div>
+                <div class="prova-nome">{{ prova['PROVA'] }}</div>
+                <div class="prova-responsavel">Responsável: {{ prova['RESPONSAVEL'] }}</div>
+            </div>
+            {% else %}
+            <div class="prova-card">
+                Nenhuma prova programada
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Função para atualizar os dados
+        function refreshData() {
+            location.reload();
+        }
+        
+        // Configura a atualização automática
+        let seconds = 60;
+        const countdownElement = document.getElementById('countdown');
+        
+        const countdown = setInterval(function() {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                refreshData();
+            }
+        }, 6000);
+        
+        // Atualiza a cada 60 segundos
+        setTimeout(refreshData, 60000);
+    </script>
+</body>
+</html>
