@@ -1,10 +1,12 @@
 from flask import Flask, render_template
+import traceback
 import pandas as pd
 from datetime import datetime
 import os
 import requests
 from io import StringIO
 import unicodedata
+
 
 app = Flask(__name__)
 
@@ -112,16 +114,21 @@ def get_provas_data():
 
 @app.route('/')
 def kanban_provas():
-    error, data = get_provas_data()
+    try:
+        error, data = get_provas_data()
 
-    if error:
-        print("ERRO:", error)
-        return render_template('error.html', error=error)
+        if error:
+            print("ERRO:", error)
+            return render_template('error.html', error=error)
 
-    return render_template('kanban.html', 
-                         provas_agora=data['provas_agora'],
-                         proximas_provas=data['proximas_provas'],
-                         atualizado_em=data['atualizado_em'])
+        return render_template('kanban.html', 
+                             provas_agora=data['provas_agora'],
+                             proximas_provas=data['proximas_provas'],
+                             atualizado_em=data['atualizado_em'])
+    except Exception as e:
+        print("EXCEÇÃO NÃO TRATADA:", e)
+        traceback.print_exc()
+        return render_template('error.html', error=str(e))
 
 # Se for rodar localmente, descomente abaixo:
 # if __name__ == '__main__':
