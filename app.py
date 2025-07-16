@@ -5,9 +5,7 @@ import os
 import requests
 from io import StringIO
 import unicodedata
-
 app = Flask(__name__)
-
 # Configurações
 GOOGLE_SHEETS_URL = "https://docs.google.com/spreadsheets/d/1-w7GAzxvB-Ugb7cRzTA2jodaJtSrrQpf/export?format=csv&gid=442377092"
 LOCAL_BACKUP = "provas_backup.csv"
