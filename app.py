@@ -117,19 +117,21 @@ def kanban_provas():
     try:
         error, data = get_provas_data()
         if error:
-            print("ERRO:", error)
+            print("ERRO CONTROLADO:", error)
             return render_template('error.html', error=error)
-        return render_template('kanban.html', 
-                         provas_agora=data['provas_agora'],
-                         proximas_provas=data['proximas_provas'],
-                         atualizado_em=data['atualizado_em'])
+        return render_template(
+            'kanban.html',
+            provas_agora=data['provas_agora'],
+            proximas_provas=data['proximas_provas'],
+            atualizado_em=data['atualizado_em']
+        )
     except Exception as e:
         print("EXCEÇÃO NÃO TRATADA:", e)
         traceback.print_exc()
         return render_template('error.html', error=str(e))
 
 # Se for rodar localmente, descomente abaixo:
-#if __name__ == '__main__':
-#    app.run(host='localhost', port=5000, debug=True)
-app = Flask(__name__)
+if __name__ == '__main__':
+    app.run(host='localhost', port=5000, debug=True)
+
 app.config['DEBUG'] = True
